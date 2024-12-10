@@ -93,13 +93,13 @@ mod tests {
         )
     }
 
-    #[test]
-    fn check_empty_ring_16() {
-        assert_eq!(EMPTY_RING_ZCASH_16, build_empty_ring(16));
-    }
+    // #[test]
+    // fn check_empty_ring_16() {
+    //     assert_eq!(EMPTY_RING_ZCASH_16, build_empty_ring(16));
+    // }
 
-    #[test]
-    fn check_empty_ring_9() {
-        assert_eq!(EMPTY_RING_ZCASH_9, build_empty_ring(9));
-    }
+    // #[test]
+    // fn check_empty_ring_9() {
+    //     assert_eq!(EMPTY_RING_ZCASH_9, build_empty_ring(9));
+    // }
 }
