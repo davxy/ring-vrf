@@ -40,8 +40,8 @@ const COMPLEMENT_POINT: crate::Jubjub = {
 
 // Just a point of an unknown dlog.
 pub(crate) const PADDING_POINT: crate::Jubjub = {
-    const X: Fq = MontFp!("51388669662235673520765289130874164493455252175261340063939857275834502590401");
-    const Y: Fq = MontFp!("18784834845094714706772474139626383243220697585833713938002454474078009788213");
+    const X: Fq = MontFp!("25353312785503880631115876544961443547556511355876709037985429927235015446936");
+    const Y: Fq = MontFp!("48034916494481689813223622984827694955476028581467743482028403440447916980403");
     crate::Jubjub::new_unchecked(X, Y)
 };
 
@@ -197,7 +197,7 @@ mod tests {
 
     #[test]
     fn check_padding_point() {
-        let padding_point = ring::hash_to_curve::<crate::bandersnatch::Fq, crate::bandersnatch::SWConfig>(b"w3f/ring-proof/common/padding");
+        let padding_point = ring::hash_to_curve::<crate::bandersnatch::Fq, crate::bandersnatch::SWConfig>(b"/w3f/ring-proof/padding");
         assert_eq!(PADDING_POINT, padding_point);
     }
 }
