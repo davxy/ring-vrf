@@ -8,7 +8,7 @@ use ark_serialize::{
     Validate, Write,
 };
 use ark_std::{rand::{Rng, SeedableRng}, vec};
-use ring::{Transcript, pcs::PCS, Domain, ring::Ring};
+use ring::{ArkTranscript, pcs::PCS, Domain, ring::Ring};
 
 use crate::bandersnatch::{Fq, SWAffine, SWConfig, BandersnatchConfig};
 use crate::bls12_381::Bls12_381;
@@ -40,8 +40,8 @@ const COMPLEMENT_POINT: crate::Jubjub = {
 
 // Just a point of an unknown dlog.
 pub(crate) const PADDING_POINT: crate::Jubjub = {
-    const X: Fq = MontFp!("25448400713078632486748382313960039031302935774474538965225823993599751298535");
-    const Y: Fq = MontFp!("24382892199244280513693545286348030912870264650402775682704689602954457435722");
+    const X: Fq = MontFp!("25353312785503880631115876544961443547556511355876709037985429927235015446936");
+    const Y: Fq = MontFp!("48034916494481689813223622984827694955476028581467743482028403440447916980403");
     crate::Jubjub::new_unchecked(X, Y)
 };
 
@@ -52,7 +52,7 @@ pub fn make_piop_params(domain_size: usize) -> PiopParams {
 
 pub fn make_ring_verifier(verifier_key: VerifierKey, domain_size: usize) -> RingVerifier {
     let piop_params = make_piop_params(domain_size);
-    RingVerifier::init(verifier_key, piop_params, Transcript::new(b"ring-vrf-test"))
+    RingVerifier::init(verifier_key, piop_params, ArkTranscript::new(b"ring-vrf"))
 }
 
 #[derive(Clone)]
@@ -135,11 +135,11 @@ impl KZG {
 
     /// `k` is the prover secret index in [0..keyset_size).
     pub fn init_ring_prover(&self, prover_key: ProverKey, k: usize) -> RingProver {
-        RingProver::init(prover_key, self.piop_params.clone(), k, Transcript::new(b"ring-vrf-test"))
+        RingProver::init(prover_key, self.piop_params.clone(), k, ArkTranscript::new(b"ring-vrf"))
     }
 
     pub fn init_ring_verifier(&self, verifier_key: VerifierKey) -> RingVerifier {
-        RingVerifier::init(verifier_key, self.piop_params.clone(), Transcript::new(b"ring-vrf-test"))
+        RingVerifier::init(verifier_key, self.piop_params.clone(), ArkTranscript::new(b"ring-vrf"))
     }
 }
 
@@ -197,7 +197,7 @@ mod tests {
 
     #[test]
     fn check_padding_point() {
-        let padding_point = ring::hash_to_curve::<crate::Jubjub>(b"w3f/ring-proof/common/padding");
+        let padding_point = ring::hash_to_curve::<crate::bandersnatch::Fq, crate::bandersnatch::SWConfig>(b"/w3f/ring-proof/padding");
         assert_eq!(PADDING_POINT, padding_point);
     }
 }
